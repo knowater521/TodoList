@@ -3,6 +3,7 @@
 """
 from flask import Flask
 from flask_bootstrap import Bootstrap
+from flask_login import LoginManager
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 from config import config
@@ -10,6 +11,12 @@ from config import config
 bootstrap = Bootstrap()
 mail = Mail()
 db = SQLAlchemy()
+login_manager = LoginManager()
+# session_protection 属性可以设为 None 、 'basic' 或 'strong' ,以提供不同的安全等级防止用户会话遭篡改。
+# 'strong': 记录客户端 IP地址和浏览器的用户代理信息,如果发现异动就登出用户
+login_manager.session_protection = 'strong'
+# login_view 属性设置登录页面的端点。
+login_manager.login_view = 'auth.login'
 
 
 def create_app(config_name='development'):
@@ -22,6 +29,8 @@ def create_app(config_name='development'):
     bootstrap.init_app(app)
     mail.init_app(app)
     db.init_app(app)
+    # 用户认证新加扩展
+    login_manager.init_app(app)
 
     # 附加路由和自定义的错误页面
     from app.auth import auth as auth_bp

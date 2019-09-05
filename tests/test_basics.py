@@ -29,13 +29,9 @@ class BasicsTestCase(unittest.TestCase):
         self.app_context.pop()
 
     def test_app_exists(self):
-        """
-        测试当前app是否存在?
-        """
+        """测试当前app是否存在?"""
         self.assertFalse(current_app is None)
 
     def test_app_is_testing(self):
-        """
-        测试当前app是否为测试环境?
-        """
+        """测试当前app是否为测试环境?"""
         self.assertTrue(current_app.config['TESTING'])
