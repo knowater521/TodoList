@@ -17,7 +17,7 @@ def login():
             # login_user() 函数的参数是要登录的用户,以及可选的“记住我”布尔值,“记住我”也在表单中填写。
             login_user(user)
             return redirect(request.args.get('next') or url_for('auth.login'))
-        flash('无效的用户名和密码.')
+        flash('无效的用户名和密码.', category='error')
     return render_template('auth/login.html', form=form)
 
 
@@ -25,9 +25,8 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash('用户注销成功.')
+    flash('用户注销成功.', category='error')
     return redirect(url_for('auth.login'))
-
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -38,6 +37,6 @@ def register():
         user.username = form.username.data
         user.password = form.password.data
         db.session.add(user)
-        flash('注册成功， 请登录')
+        flash('注册成功， 请登录', category='success')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)

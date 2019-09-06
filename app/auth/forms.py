@@ -7,21 +7,34 @@ from app.models import User
 
 class LoginForm(FlaskForm):
     """用户登录表单"""
-    email = StringField('电子邮箱', validators=[DataRequired(), Length(1, 64), Email()])
-    password = PasswordField('密码', validators=[DataRequired()])
+    email = StringField('电子邮箱', validators=[DataRequired(), Length(1, 64), Email()],
+                        render_kw={'class': 'layui-input', 'placeholder': '电子邮箱', 'lay-verify': 'required'})
+    password = PasswordField('密码', validators=[DataRequired()],
+                             render_kw={'class': 'layui-input', 'placeholder': '密码', 'lay-verify': 'required'}
+                             )
     submit = SubmitField('登录')
 
 
 class RegistrationForm(FlaskForm):
-    email = StringField('电子邮箱', validators=[
-        DataRequired(), Length(1, 64), Email()])
-    username = StringField('用户名', validators=[
-        DataRequired(), Length(1, 64),
-        Regexp('^\w*$', message='用户名只能由字母数字或者下划线组成')])
-    password = PasswordField('密码', validators=[
-        DataRequired(), EqualTo('repassword', message='密码不一致')])
-    repassword = PasswordField('确认密码', validators=[DataRequired()])
+    email = StringField('电子邮箱',
+                        validators=[DataRequired(), Length(1, 64), Email()],
+                        render_kw={'class': 'layui-input', 'placeholder': '电子邮箱', 'lay-verify': 'required'}
+                        )
+    username = StringField('用户名',
+                           validators=[DataRequired(), Length(1, 64), Regexp('^\w*$', message='用户名只能由字母数字或者下划线组成')],
+                           render_kw={'class': 'layui-input', 'placeholder': '用户名', 'lay-verify': 'required'}
+                           )
+    password = PasswordField('密码',
+                             validators=[DataRequired(), EqualTo('repassword', message='密码不一致')],
+                             render_kw={'class': 'layui-input', 'placeholder': '密码', 'lay-verify': 'required'}
+                             )
+    repassword = PasswordField('确认密码',
+                               validators=[DataRequired()],
+                               render_kw={'class': 'layui-input', 'placeholder': '确认密码', 'lay-verify': 'required'}
+                               )
     submit = SubmitField('注册')
+
+
 
     # 两个自定义的验证函数, 以validate_ 开头且跟着字段名的方法,这个方法和常规的验证函数一起调用。
     def validate_email(self, field):
